@@ -7,7 +7,9 @@ export async function getClients() {
       "clients",
       () => $fetch(`${config.public.reqresApi}/api/users`),
     );
-    useLocalStorage().setData(data.value.data, "allUsers");
+    if (data && data.value) {
+      useLocalStorage().setData(data.value.data, "allUsers");
+    }
     return { data, pending, error, refresh };
   } catch (error) {
     console.error("Error fetching users:", error);

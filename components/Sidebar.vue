@@ -28,6 +28,11 @@ const sortedClients = computed(() => {
     ? sortByProperty(filteredClients, property)
     : sortByPointsAndLastName(props.clients);
 });
+
+function handleUpdateList() {
+  getClients();
+  alert("Данные обновлены");
+}
 </script>
 
 <template>
@@ -71,7 +76,7 @@ const sortedClients = computed(() => {
       <button
         v-show="currentTab === 0"
         class="sidebar__update-list"
-        @click="getClients()"
+        @click="handleUpdateList"
       >
         Update list
       </button>
