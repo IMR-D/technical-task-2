@@ -19,10 +19,11 @@ const fullName = computed(() => {
 });
 
 const userPoints = computed(() => {
+  const copyClient = { ...props.client };
   const clientsInfo = useLocalStorage().getData("clientsInfo");
   if (clientsInfo && Object.keys(clientsInfo).length) {
-    if (clientsInfo[props.client.id]) {
-      return clientsInfo[props.client.id].points;
+    if (clientsInfo[copyClient.id]) {
+      return clientsInfo[copyClient.id].points;
     }
   }
   return 0;
