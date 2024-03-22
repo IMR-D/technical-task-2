@@ -24,12 +24,9 @@ const searchQuery = defineModel("searchQuery");
   align-items: center;
 }
 
-input {
+input[type="search"] {
   width: 100%;
   height: 32px;
-}
-
-input[type="search"] {
   padding: 8px 8px 8px 30px;
   border-radius: 4px;
   border-color: #b7dbec;
@@ -41,9 +38,9 @@ input[type="search"] {
   width: 20px;
   height: 20px;
   background-color: white;
-  img {
-    width: 100%;
-    height: 100%;
-  }
+}
+img {
+  width: 100%;
+  height: 100%;
 }
 </style>

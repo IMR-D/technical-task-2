@@ -2,6 +2,7 @@
 import PointsBtn from "@/components/PointsBtn.vue";
 import { useLocalStorage } from "@/composables/useLocalStorage.js";
 import { getClients } from "@/composables/useClients.js";
+import { getfullName } from "@/utils/heplers.js";
 
 const props = defineProps({
   client: {
@@ -10,41 +11,28 @@ const props = defineProps({
   },
 });
 
+const { getData, setData } = useLocalStorage();
+
 const points = ref(0);
 const comment = ref("");
 
-const fullName = computed(() => {
-  const fname = props.client?.first_name ? props.client?.first_name : "";
-  const lname = props.client?.last_name ? props.client?.last_name : "";
-  return fname + " " + lname;
-});
+const fullName = computed(() => getfullName(props.client));
 
 function handlerSave() {
-  const clientsInfo = useLocalStorage().getData("clientsInfo");
-  if (clientsInfo && Object.keys(clientsInfo).length) {
-    useLocalStorage().setData(
-      Object.assign(clientsInfo, {
-        [props.client.id]: { points: points.value, comment: comment.value },
-      }),
-      "clientsInfo",
-    );
-  } else {
-    useLocalStorage().setData(
-      { [props.client.id]: { points: points.value, comment: comment.value } },
-      "clientsInfo",
-    );
-  }
+  const clientsInfo = getData("clientsInfo") ?? {};
+  const update = {
+    [props.client.id]: { points: points.value, comment: comment.value },
+  };
+  setData("clientsInfo", { ...clientsInfo, ...update });
   getClients();
   alert("Данные успешно сохранены");
 }
 
 onMounted(() => {
   points.value = (function userPoints() {
-    const clientsInfo = useLocalStorage().getData("clientsInfo");
-    if (clientsInfo && Object.keys(clientsInfo).length) {
-      if (clientsInfo[props.client.id]) {
-        return clientsInfo[props.client.id].points;
-      }
+    const clientsInfo = getData("clientsInfo") ?? {};
+    if (clientsInfo[props.client.id]) {
+      return clientsInfo[props.client.id].points;
     }
     return 0;
   })();
@@ -112,9 +100,9 @@ onMounted(() => {
   margin: 12px auto;
   background-color: #007bff;
   border: transparent;
-  &:hover {
-    background-color: #0056b3;
-  }
+}
+.client-info__save:hover {
+  background-color: #0056b3;
 }
 @media screen and (max-width: 400px) {
   .content {
