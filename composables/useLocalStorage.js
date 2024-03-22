@@ -11,7 +11,7 @@ export function useLocalStorage() {
     }
   }
 
-  function setData(value, key) {
+  function setData(key, value) {
     try {
       if (typeof localStorage !== "undefined") {
         localStorage.setItem(key, JSON.stringify(value));

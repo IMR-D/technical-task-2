@@ -1,5 +1,6 @@
 <script setup>
 import { useLocalStorage } from "@/composables/useLocalStorage.js";
+import { getfullName } from "~/utils/heplers.js";
 
 const props = defineProps({
   client: {
@@ -12,11 +13,7 @@ const props = defineProps({
   },
 });
 
-const fullName = computed(() => {
-  const fname = props.client?.first_name ? props.client?.first_name : "";
-  const lname = props.client?.last_name ? props.client?.last_name : "";
-  return fname + " " + lname;
-});
+const fullName = computed(() => getfullName(props.client));
 
 const userPoints = computed(() => {
   const copyClient = { ...props.client };

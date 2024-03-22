@@ -26,18 +26,17 @@ function decreasePoint() {
   align-items: center;
   border-radius: 8px;
   background-color: #e1e1e1;
-
-  button {
-    background-color: white;
-    border-radius: 8px;
-    width: 34px;
-    height: 34px;
-    cursor: pointer;
-    border: transparent;
-    &:hover {
-      background-color: #0ea5e9;
-      color: white;
-    }
-  }
+}
+button {
+  background-color: white;
+  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+  border: transparent;
+}
+button:hover {
+  background-color: #0ea5e9;
+  color: white;
 }
 </style>

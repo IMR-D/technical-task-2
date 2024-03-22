@@ -7,8 +7,11 @@ export async function getClients() {
       "clients",
       () => $fetch(`${config.public.reqresApi}/api/users`),
     );
-    if (data && data.value && data.value?.data) {
-      useLocalStorage().setData(data.value.data, "allUsers");
+    if (data?.value?.data) {
+      useLocalStorage().setData("allUsers", data.value.data);
+      data.value.data.forEach((item) => {
+        clientExpansion(item, ["points", "comment"]);
+      });
     }
     return { data, pending, error, refresh };
   } catch (error) {
@@ -23,6 +26,11 @@ export async function getClientById(id) {
     const { data, pending, error, refresh } = await useAsyncData("client", () =>
       $fetch(`${config.public.reqresApi}/api/users/${id}`),
     );
+
+    if (data?.value?.data) {
+      clientExpansion(data.value.data, ["points", "comment"]);
+    }
+
     return { data, pending, error, refresh };
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -33,6 +41,7 @@ export async function getClientById(id) {
 export function clientExpansion(objectClient, [points, comment]) {
   try {
     const clientsInfo = useLocalStorage().getData("clientsInfo");
+
     if (clientsInfo && Object.keys(clientsInfo).length) {
       objectClient[points] =
         (clientsInfo[objectClient.id] &&
@@ -44,9 +53,11 @@ export function clientExpansion(objectClient, [points, comment]) {
         "";
       return objectClient;
     } else {
-      objectClient[points] = 0;
-      objectClient[comment] = "";
-      return objectClient;
+      return {
+        ...objectClient,
+        points: 0,
+        comment: "",
+      };
     }
   } catch (error) {
     console.error("Extension error check the arguments", error);

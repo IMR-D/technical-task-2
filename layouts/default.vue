@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+
 defineProps({
   clients: {
     type: Array,
@@ -13,10 +14,11 @@ const isOpen = ref(true);
   <div>
     <Sidebar
       v-model:open="isOpen"
-      :class="{ 'sidebar--open': isOpen, sidebar: true }"
+      class="sidebar"
+      :class="{ 'sidebar--open': isOpen }"
       :clients
     />
-    <div :class="{ 'content--compressed': isOpen, content: true }">
+    <div :class="{ 'content--compressed': isOpen }" class="content">
       <slot />
     </div>
   </div>
@@ -30,16 +32,20 @@ const isOpen = ref(true);
   justify-content: center;
   align-items: center;
 }
+
 .content--compressed {
   padding-left: 300px;
 }
+
 .sidebar {
   transform: translateX(-100%);
   transition: transform 0.3s ease;
 }
+
 .sidebar--open {
   transform: translateX(0);
 }
+
 @media screen and (max-width: 769px) {
   .content--compressed {
     padding-left: 0;

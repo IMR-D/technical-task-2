@@ -8,7 +8,7 @@ import {
   sortByPointsAndLastName,
   sortByProperty,
 } from "@/utils/sorting.js";
-import { getClients } from "~/composables/useClients.js";
+import { getClients } from "@/composables/useClients.js";
 
 const props = defineProps({
   clients: {
@@ -21,12 +21,18 @@ const currentTab = ref(0);
 const searchQuery = ref("");
 const open = defineModel("open");
 
-const sortedClients = computed(() => {
-  const property = currentTab.value === 0 ? "last_name" : "points";
+const sortedByLastName = computed(() => {
   const filteredClients = filterData(props.clients, searchQuery.value);
-  return property === "last_name"
-    ? sortByProperty(filteredClients, property)
-    : sortByPointsAndLastName(props.clients);
+  return sortByProperty(filteredClients, "last_name");
+});
+const sortedByPointsByLastName = computed(() => {
+  return sortByPointsAndLastName(props.clients);
+});
+
+const sortedClients = computed(() => {
+  return currentTab.value === 0
+    ? sortedByLastName.value
+    : sortedByPointsByLastName.value;
 });
 
 function handleUpdateList() {
@@ -153,9 +159,9 @@ function handleUpdateList() {
   cursor: pointer;
   color: white;
   border: transparent;
-  &:hover {
-    background-color: #0056b3;
-  }
+}
+.sidebar__update-list:hover {
+  background-color: #0056b3;
 }
 @media screen and (max-width: 769px) {
   .sidebar__toggle-close {
