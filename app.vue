@@ -1,11 +1,24 @@
 <template>
   <div>
-    <NuxtLayout>
+    <NuxtLayout :clients>
       <NuxtPage />
     </NuxtLayout>
   </div>
 </template>
-<script setup></script>
+<script setup>
+import { clientExpansion, getClients } from "@/composables/useClients";
+
+const { data } = await getClients();
+
+const clients = computed(() => {
+  if (data.value) {
+    data.value.data.forEach((item) => {
+      clientExpansion(item, ["points", "comment"]);
+    });
+    return data.value.data;
+  } else return [];
+});
+</script>
 
 <style>
 body {
