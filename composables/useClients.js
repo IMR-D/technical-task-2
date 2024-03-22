@@ -1,4 +1,4 @@
-import { useLocalStorage } from "~/composables/useLocalStorage.js";
+import { useLocalStorage } from "@/composables/useLocalStorage.js";
 
 export async function getClients() {
   try {

@@ -4,4 +4,4 @@
   <div>Select a client</div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped></style>

@@ -1,3 +1,35 @@
+<script setup>
+import { defineModel } from "vue";
+import ClientListItem from "@/components/ClientListItem.vue";
+import SwitchBtn from "@/components/SwitchBtn.vue";
+import SearchInput from "@/components/SearchInput.vue";
+import {
+  filterData,
+  sortByPointsAndLastName,
+  sortByProperty,
+} from "@/utils/sorting.js";
+import { getClients } from "~/composables/useClients.js";
+
+const props = defineProps({
+  clients: {
+    type: Array,
+    default: () => [],
+  },
+});
+
+const currentTab = ref(0);
+const searchQuery = ref("");
+const open = defineModel("open");
+
+const sortedClients = computed(() => {
+  const property = currentTab.value === 0 ? "last_name" : "points";
+  const filteredClients = filterData(props.clients, searchQuery.value);
+  return property === "last_name"
+    ? sortByProperty(filteredClients, property)
+    : sortByPointsAndLastName(props.clients);
+});
+</script>
+
 <template>
   <aside class="sidebar">
     <div class="sidebar__header">
@@ -46,38 +78,6 @@
     </div>
   </aside>
 </template>
-
-<script setup>
-import { defineModel } from "vue";
-import ClientListItem from "@/components/ClientListItem.vue";
-import SwitchBtn from "@/components/SwitchBtn.vue";
-import SearchInput from "@/components/SearchInput.vue";
-import {
-  filterData,
-  sortByPointsAndLastName,
-  sortByProperty,
-} from "@/utils/sorting.js";
-import { getClients } from "~/composables/useClients.js";
-
-const props = defineProps({
-  clients: {
-    type: Array,
-    default: () => [],
-  },
-});
-
-const currentTab = ref(0);
-const searchQuery = ref("");
-const open = defineModel("open");
-
-const sortedClients = computed(() => {
-  const property = currentTab.value === 0 ? "last_name" : "points";
-  const filteredClients = filterData(props.clients, searchQuery.value);
-  return property === "last_name"
-    ? sortByProperty(filteredClients, property)
-    : sortByPointsAndLastName(props.clients);
-});
-</script>
 
 <style scoped>
 .sidebar {
